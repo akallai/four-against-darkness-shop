@@ -599,6 +599,35 @@
     font-size: 3rem; color: var(--accent-dim); opacity: 0.5;
     font-family: 'Cinzel Decorative', serif;
   }
+
+  /* ── Book Badge ── */
+  .book-badge {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 0.12rem 0.45rem;
+    border-radius: 3px;
+    color: #ccc;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .book-badge img {
+    width: 11px;
+    height: 11px;
+    opacity: 0.8;
+  }
+  .book-badge[data-book="core"] {
+    border-color: rgba(201, 168, 76, 0.3);
+    color: var(--accent-light);
+  }
 </style>
 </head>
 <body>
@@ -665,201 +694,205 @@ const ICON_BASE = "https://game-icons.net/icons/ffffff/transparent/1x1/";
 // ── Fallback SVG (simple diamond shape) ──
 const FALLBACK_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,10 90,50 50,90 10,50' fill='none' stroke='%23ffffff' stroke-width='3'/%3E%3Ccircle cx='50' cy='50' r='8' fill='%23ffffff'/%3E%3C/svg%3E";
 
+const BOOKS = {
+  core: { name: "Core Rulebook", icon: "delapouite/rule-book" },
+};
+
 const ITEMS = [
   // ── Melee Weapons ──
-  { id: 1,  name: "Light Weapon", cat: "melee", section: "Melee Weapons", price: 5, priceLabel: "5 gp",
+  { id: 1,  book: "core", name: "Light Weapon", cat: "melee", section: "Melee Weapons", price: 5, priceLabel: "5 gp",
     icon: "lorc/plain-dagger",
     desc: "Dagger, knife, stick, or club. Slashing or crushing.",
     mods: [{ t: "-1 Attack", c: "negative" }, { t: "1 hand", c: "hands" }, { t: "No corridor penalty", c: "positive" }] },
-  { id: 2,  name: "Hand Weapon", cat: "melee", section: "Melee Weapons", price: 6, priceLabel: "6 gp",
+  { id: 2,  book: "core", name: "Hand Weapon", cat: "melee", section: "Melee Weapons", price: 6, priceLabel: "6 gp",
     icon: "skoll/gladius",
     desc: "Sword, axe, mace, or hammer. Slashing or crushing. The adventurer's staple.",
     mods: [{ t: "No modifier", c: "neutral" }, { t: "1 hand", c: "hands" }] },
-  { id: 3,  name: "Two-Handed Weapon", cat: "melee", section: "Melee Weapons", price: 15, priceLabel: "15 gp",
+  { id: 3,  book: "core", name: "Two-Handed Weapon", cat: "melee", section: "Melee Weapons", price: 15, priceLabel: "15 gp",
     icon: "lorc/battle-axe",
     desc: "Greatsword, halberd, maul, or warhammer. Slashing or crushing.",
     mods: [{ t: "+1 Attack", c: "positive" }, { t: "2 hands", c: "hands" }, { t: "-1 in corridors", c: "negative" }] },
-  { id: 4,  name: "Stake", cat: "melee", section: "Melee Weapons", price: 6, priceLabel: "6 gp",
+  { id: 4,  book: "core", name: "Stake", cat: "melee", section: "Melee Weapons", price: 6, priceLabel: "6 gp",
     icon: "lorc/sacrificial-dagger",
     desc: "Wooden stake. Light weapon normally, but counts as hand weapon vs vampires.",
     mods: [{ t: "-1 Attack", c: "negative" }, { t: "Hand wpn vs vampires", c: "positive" }, { t: "1 hand", c: "hands" }] },
-  { id: 5,  name: "Crowbar", cat: "melee", section: "Melee Weapons", price: 10, priceLabel: "10 gp",
+  { id: 5,  book: "core", name: "Crowbar", cat: "melee", section: "Melee Weapons", price: 10, priceLabel: "10 gp",
     icon: "delapouite/crowbar",
     desc: "Light crushing weapon. Also handy for prying open stubborn doors.",
     mods: [{ t: "-1 Attack", c: "negative" }, { t: "+1 bash doors", c: "positive" }, { t: "1 hand", c: "hands" }] },
 
   // ── Ranged Weapons ──
-  { id: 6,  name: "Sling", cat: "ranged", section: "Ranged Weapons", price: 4, priceLabel: "4 gp",
+  { id: 6,  book: "core", name: "Sling", cat: "ranged", section: "Ranged Weapons", price: 4, priceLabel: "4 gp",
     icon: "lorc/pocket-bow",
     desc: "Crushing ranged weapon. Shoot once before melee. Twice in open plains/deserts if not surprised.",
     mods: [{ t: "-1 Attack", c: "negative" }, { t: "Crushing", c: "neutral" }, { t: "2 hands", c: "hands" }] },
-  { id: 7,  name: "Bow", cat: "ranged", section: "Ranged Weapons", price: 15, priceLabel: "15 gp",
+  { id: 7,  book: "core", name: "Bow", cat: "ranged", section: "Ranged Weapons", price: 15, priceLabel: "15 gp",
     icon: "delapouite/bow-arrow",
     desc: "Standard bow. Shoot once before melee. Rangers & elves shoot twice outdoors if not surprised.",
     mods: [{ t: "No modifier", c: "neutral" }, { t: "Slashing", c: "neutral" }, { t: "2 hands", c: "hands" }] },
-  { id: 8,  name: "Crossbow", cat: "ranged", section: "Ranged Weapons", price: 15, priceLabel: "15 gp",
+  { id: 8,  book: "core", name: "Crossbow", cat: "ranged", section: "Ranged Weapons", price: 15, priceLabel: "15 gp",
     icon: "carl-olsen/crossbow",
     desc: "Heavy crossbow. Powerful but slow to reload. 1 turn to reload after each shot.",
     mods: [{ t: "+1 Attack", c: "positive" }, { t: "Slashing", c: "neutral" }, { t: "2 hands", c: "hands" }, { t: "1 turn reload", c: "negative" }] },
-  { id: 9,  name: "Throwing Star", cat: "ranged", section: "Ranged Weapons", price: 2, priceLabel: "2 gp",
+  { id: 9,  book: "core", name: "Throwing Star", cat: "ranged", section: "Ranged Weapons", price: 2, priceLabel: "2 gp",
     icon: "lorc/shuriken",
     desc: "Light ranged slashing. Max 1 dmg per hit. Throw 2 per turn at same or different targets.",
     mods: [{ t: "-1 Attack", c: "negative" }, { t: "Max 1 dmg", c: "negative" }, { t: "2 throws/turn", c: "positive" }] },
-  { id: 10, name: "Handgun", cat: "ranged", section: "Ranged Weapons", price: 30, priceLabel: "30 gp",
+  { id: 10, book: "core", name: "Handgun", cat: "ranged", section: "Ranged Weapons", price: 30, priceLabel: "30 gp",
     icon: "john-colburn/pistol-gun",
     desc: "Black powder pistol. Devastating but unreliable. Explodes on roll of 1 (1 dmg to user). 2 turns reload. +1 Wandering Monster chance.",
     mods: [{ t: "+2 Attack", c: "positive" }, { t: "Explodes on 1", c: "negative" }, { t: "2 turn reload", c: "negative" }] },
-  { id: 11, name: "Black Powder Rifle", cat: "ranged", section: "Ranged Weapons", price: 90, priceLabel: "90 gp",
+  { id: 11, book: "core", name: "Black Powder Rifle", cat: "ranged", section: "Ranged Weapons", price: 90, priceLabel: "90 gp",
     icon: "skoll/musket",
     desc: "Long-range black powder weapon. Explodes on roll of 1 (1 dmg to user). 2 turns reload. +1 Wandering Monster chance.",
     mods: [{ t: "+3 Attack", c: "positive" }, { t: "Explodes on 1", c: "negative" }, { t: "2 turn reload", c: "negative" }] },
 
   // ── Armor & Defense ──
-  { id: 12, name: "Light Armor", cat: "armor", section: "Armor & Defense", price: 10, priceLabel: "10 gp",
+  { id: 12, book: "core", name: "Light Armor", cat: "armor", section: "Armor & Defense", price: 10, priceLabel: "10 gp",
     icon: "delapouite/leather-armor",
     desc: "Leather or padded armor. Non-metallic. Wearable by most classes.",
     mods: [{ t: "+1 Defense", c: "positive" }, { t: "-1 Swimming", c: "negative" }] },
-  { id: 13, name: "Heavy Armor", cat: "armor", section: "Armor & Defense", price: 30, priceLabel: "30 gp",
+  { id: 13, book: "core", name: "Heavy Armor", cat: "armor", section: "Armor & Defense", price: 30, priceLabel: "30 gp",
     icon: "lorc/breastplate",
     desc: "Chain or plate armor. Metallic. Restricts mobility but offers solid protection.",
     mods: [{ t: "+2 Defense", c: "positive" }, { t: "-1 Stealth", c: "negative" }, { t: "-2 Swimming/Climbing", c: "negative" }] },
-  { id: 14, name: "Shield", cat: "armor", section: "Armor & Defense", price: 5, priceLabel: "5 gp",
+  { id: 14, book: "core", name: "Shield", cat: "armor", section: "Armor & Defense", price: 5, priceLabel: "5 gp",
     icon: "willdabeast/round-shield",
     desc: "Wooden or metal shield. Can carry a spare on your back. Lost when fleeing.",
     mods: [{ t: "+1 Defense", c: "positive" }, { t: "-1 Stealth", c: "negative" }, { t: "1 hand", c: "hands" }] },
 
   // ── Light Sources ──
-  { id: 15, name: "Lantern", cat: "light", section: "Light Sources", price: 4, priceLabel: "4 gp",
+  { id: 15, book: "core", name: "Lantern", cat: "light", section: "Light Sources", price: 4, priceLabel: "4 gp",
     icon: "lorc/lantern",
     desc: "Oil lantern. Light source that lasts the entire adventure. Requires one hand.",
     mods: [{ t: "Lasts whole adventure", c: "positive" }, { t: "1 hand", c: "hands" }] },
-  { id: 16, name: "Torch (pack of 12)", cat: "light", section: "Light Sources", price: 1, priceLabel: "1 gp",
+  { id: 16, book: "core", name: "Torch (pack of 12)", cat: "light", section: "Light Sources", price: 1, priceLabel: "1 gp",
     icon: "delapouite/torch",
     desc: "Bundle of 12 torches. Each lasts 6 rooms / 1 hour. Can be used as a light crushing weapon (+2 vs flammable foes). Extinguished on attack roll of 1.",
     mods: [{ t: "6 rooms each", c: "neutral" }, { t: "+2 vs flammable", c: "positive" }, { t: "1 hand", c: "hands" }] },
-  { id: 17, name: "Lantern Hook", cat: "light", section: "Light Sources", price: 2, priceLabel: "2 gp",
+  { id: 17, book: "core", name: "Lantern Hook", cat: "light", section: "Light Sources", price: 2, priceLabel: "2 gp",
     icon: "delapouite/hook",
     desc: "Attach lantern to shield, freeing one hand. If shield destroyed: 3-in-6 chance lantern is also destroyed.",
     mods: [{ t: "Frees 1 hand", c: "positive" }, { t: "Risk if shield breaks", c: "negative" }] },
 
   // ── Healing & Remedies ──
-  { id: 18, name: "Bandage", cat: "healing", section: "Healing & Remedies", price: 5, priceLabel: "5 gp",
+  { id: 18, book: "core", name: "Bandage", cat: "healing", section: "Healing & Remedies", price: 5, priceLabel: "5 gp",
     icon: "lorc/bandage-roll",
     desc: "Heals 1 Life. Max 1 per PC per adventure. Cannot be used in combat. Cumulative with other healing.",
     mods: [{ t: "+1 Life", c: "positive" }, { t: "1/PC/adventure", c: "neutral" }, { t: "No combat use", c: "negative" }] },
-  { id: 19, name: "Healing Potion", cat: "healing", section: "Healing & Remedies", price: 100, priceLabel: "100 gp",
+  { id: 19, book: "core", name: "Healing Potion", cat: "healing", section: "Healing & Remedies", price: 100, priceLabel: "100 gp",
     icon: "delapouite/health-potion",
     desc: "Heals ALL damage. Max 1 per PC per adventure. Free action \u2014 usable even in combat.",
     mods: [{ t: "Full heal", c: "positive" }, { t: "Free action", c: "positive" }, { t: "1/PC/adventure", c: "neutral" }] },
-  { id: 20, name: "Herbal Tonic", cat: "healing", section: "Healing & Remedies", price: 20, priceLabel: "20 gp",
+  { id: 20, book: "core", name: "Herbal Tonic", cat: "healing", section: "Healing & Remedies", price: 20, priceLabel: "20 gp",
     icon: "lorc/standing-potion",
     desc: "Removes paralysis (e.g., from ghouls). Takes 1 turn to apply. Usable in combat.",
     mods: [{ t: "Cures paralysis", c: "positive" }, { t: "1 turn", c: "neutral" }] },
-  { id: 21, name: "Berserker Mushroom", cat: "healing", section: "Healing & Remedies", price: 15, priceLabel: "15 gp",
+  { id: 21, book: "core", name: "Berserker Mushroom", cat: "healing", section: "Healing & Remedies", price: 15, priceLabel: "15 gp",
     icon: "lorc/spotted-mushroom",
     desc: "Free action. +1 melee Attack for 1 encounter. Lose 1 Life when encounter ends. High risk, high reward.",
     mods: [{ t: "+1 melee Attack", c: "positive" }, { t: "-1 Life after", c: "negative" }, { t: "Free action", c: "positive" }] },
 
   // ── Adventuring Gear ──
-  { id: 22, name: "Rope", cat: "gear", section: "Adventuring Gear", price: 4, priceLabel: "4 gp",
+  { id: 22, book: "core", name: "Rope", cat: "gear", section: "Adventuring Gear", price: 4, priceLabel: "4 gp",
     icon: "delapouite/rope-coil",
     desc: "Sturdy rope. +1 to Climbing Saves. Can also be used to bind subdued foes.",
     mods: [{ t: "+1 Climbing", c: "positive" }] },
-  { id: 23, name: "10' Pole", cat: "gear", section: "Adventuring Gear", price: 2, priceLabel: "2 gp",
+  { id: 23, book: "core", name: "10' Pole", cat: "gear", section: "Adventuring Gear", price: 2, priceLabel: "2 gp",
     icon: "lorc/wizard-staff",
     desc: "A long wooden pole. +1 Save vs single-target traps. Reroll Search results of 2-4. Weapon type depends on class.",
     mods: [{ t: "+1 vs traps", c: "positive" }, { t: "Reroll searches", c: "positive" }, { t: "2 hands", c: "hands" }] },
-  { id: 24, name: "Bag of Nails", cat: "gear", section: "Adventuring Gear", price: 4, priceLabel: "4 gp",
+  { id: 24, book: "core", name: "Bag of Nails", cat: "gear", section: "Adventuring Gear", price: 4, priceLabel: "4 gp",
     icon: "lorc/nails",
     desc: "Secure 1 door when resting. Essential for a safe rest. One use per bag.",
     mods: [{ t: "Seal 1 door", c: "positive" }, { t: "Single use", c: "neutral" }] },
-  { id: 25, name: "Food Ration", cat: "gear", section: "Adventuring Gear", price: 1, priceLabel: "1 gp",
+  { id: 25, book: "core", name: "Food Ration", cat: "gear", section: "Adventuring Gear", price: 1, priceLabel: "1 gp",
     icon: "delapouite/bread",
     desc: "Feeds 1 person for 1 day. Max 10 per PC. Also useful as bribes for hungry foes.",
     mods: [{ t: "Max 10/PC", c: "neutral" }, { t: "Bribe fodder", c: "positive" }] },
-  { id: 26, name: "Good Lockpicks", cat: "gear", section: "Adventuring Gear", price: 25, priceLabel: "25 gp",
+  { id: 26, book: "core", name: "Good Lockpicks", cat: "gear", section: "Adventuring Gear", price: 25, priceLabel: "25 gp",
     icon: "delapouite/lockpicks",
     desc: "High-quality lockpicks. +1 to lockpicking Saves. A rogue's best friend.",
     mods: [{ t: "+1 Lockpicking", c: "positive" }] },
-  { id: 27, name: "Scroll Tube", cat: "gear", section: "Adventuring Gear", price: 4, priceLabel: "4 gp",
+  { id: 27, book: "core", name: "Scroll Tube", cat: "gear", section: "Adventuring Gear", price: 4, priceLabel: "4 gp",
     icon: "lorc/tied-scroll",
     desc: "Protects 1 scroll from destruction events. Keeps your precious spells safe.",
     mods: [{ t: "Protects 1 scroll", c: "positive" }] },
-  { id: 28, name: "Oil Flask", cat: "gear", section: "Adventuring Gear", price: 10, priceLabel: "10 gp",
+  { id: 28, book: "core", name: "Oil Flask", cat: "gear", section: "Adventuring Gear", price: 10, priceLabel: "10 gp",
     icon: "delapouite/water-flask",
     desc: "1 turn to throw. Makes a foe flammable (+2 for fire attacks). Max 1 per PC. Warning: destroys scrolls in foe's loot if fire hits.",
     mods: [{ t: "Makes flammable", c: "positive" }, { t: "1/PC", c: "neutral" }, { t: "Destroys scroll loot", c: "negative" }] },
 
   // ── Magic Items & Consumables ──
-  { id: 29, name: "Amulet", cat: "magic", section: "Magic Items & Consumables", price: 15, priceLabel: "15 gp",
+  { id: 29, book: "core", name: "Amulet", cat: "magic", section: "Magic Items & Consumables", price: 15, priceLabel: "15 gp",
     icon: "lorc/gem-pendant",
     desc: "Grants 1 Luck point (reroll any roll, like halfling Luck). Discarded after use. Max 1 per PC.",
     mods: [{ t: "1 Luck reroll", c: "positive" }, { t: "Single use", c: "neutral" }, { t: "1/PC", c: "neutral" }] },
-  { id: 30, name: "Talisman", cat: "magic", section: "Magic Items & Consumables", price: 10, priceLabel: "10 gp",
+  { id: 30, book: "core", name: "Talisman", cat: "magic", section: "Magic Items & Consumables", price: 10, priceLabel: "10 gp",
     icon: "lorc/crystal-shine",
     desc: "+1 to a single Save (choose before rolling). Discarded after use. Max 1 per PC.",
     mods: [{ t: "+1 Save", c: "positive" }, { t: "Single use", c: "neutral" }, { t: "1/PC", c: "neutral" }] },
-  { id: 31, name: "Holy Water", cat: "magic", section: "Magic Items & Consumables", price: 30, priceLabel: "30 gp",
+  { id: 31, book: "core", name: "Holy Water", cat: "magic", section: "Magic Items & Consumables", price: 30, priceLabel: "30 gp",
     icon: "delapouite/holy-water",
     desc: "1 turn to throw. Auto-damage to undead/demons \u2014 no Attack roll needed. Max 1 vial per PC per adventure.",
     mods: [{ t: "Auto-hit undead", c: "positive" }, { t: "1 vial/PC/adv", c: "neutral" }] },
-  { id: 32, name: "Scroll of Blessing", cat: "magic", section: "Magic Items & Consumables", price: 100, priceLabel: "100 gp",
+  { id: 32, book: "core", name: "Scroll of Blessing", cat: "magic", section: "Magic Items & Consumables", price: 100, priceLabel: "100 gp",
     icon: "lorc/scroll-unfurled",
     desc: "1 turn to read. Casts Blessing (removes curse, petrification, etc.). Invaluable insurance.",
     mods: [{ t: "Removes curse", c: "positive" }, { t: "Single use", c: "neutral" }] },
-  { id: 33, name: "Gremlin Repellent", cat: "magic", section: "Magic Items & Consumables", price: 5, priceLabel: "5 gp",
+  { id: 33, book: "core", name: "Gremlin Repellent", cat: "magic", section: "Magic Items & Consumables", price: 5, priceLabel: "5 gp",
     icon: "lorc/fizzing-flask",
     desc: "Smear on 1 item before adventure. Invisible gremlins won't steal it. Wears off at end of adventure.",
     mods: [{ t: "Anti-gremlin", c: "positive" }, { t: "1 adventure", c: "neutral" }] },
-  { id: 34, name: "Wolfsbane", cat: "magic", section: "Magic Items & Consumables", price: 10, priceLabel: "10 gp",
+  { id: 34, book: "core", name: "Wolfsbane", cat: "magic", section: "Magic Items & Consumables", price: 10, priceLabel: "10 gp",
     icon: "lorc/wolf-howl",
     desc: "1 turn to throw. Forces werecreature to roll Morale \u2014 no Attack roll needed. Bunch is consumed on use.",
     mods: [{ t: "Forces Morale", c: "positive" }, { t: "vs werecreatures", c: "neutral" }, { t: "Single use", c: "neutral" }] },
 
   // ── Weapon Upgrades & Services ──
-  { id: 35, name: "Silvering (Light/Hand)", cat: "upgrade", section: "Weapon Upgrades & Services", price: 20, priceLabel: "20 gp",
+  { id: 35, book: "core", name: "Silvering (Light/Hand)", cat: "upgrade", section: "Weapon Upgrades & Services", price: 20, priceLabel: "20 gp",
     icon: "lorc/anvil",
     desc: "Silver-coat a metallic slashing light or hand weapon. Effective against werecreatures.",
     mods: [{ t: "+1 vs werecreatures", c: "positive" }] },
-  { id: 36, name: "Silvering (Two-Handed)", cat: "upgrade", section: "Weapon Upgrades & Services", price: 40, priceLabel: "40 gp",
+  { id: 36, book: "core", name: "Silvering (Two-Handed)", cat: "upgrade", section: "Weapon Upgrades & Services", price: 40, priceLabel: "40 gp",
     icon: "lorc/anvil-impact",
     desc: "Silver-coat a metallic slashing two-handed weapon. Effective against werecreatures.",
     mods: [{ t: "+1 vs werecreatures", c: "positive" }] },
-  { id: 37, name: "Gilding", cat: "upgrade", section: "Weapon Upgrades & Services", price: 50, priceLabel: "50 gp",
+  { id: 37, book: "core", name: "Gilding", cat: "upgrade", section: "Weapon Upgrades & Services", price: 50, priceLabel: "50 gp",
     icon: "delapouite/gold-nuggets",
     desc: "Gold-coat a metallic weapon. Makes it devastatingly effective against elementals.",
     mods: [{ t: "+2 vs elementals", c: "positive" }] },
-  { id: 38, name: "Resurrection Ritual", cat: "upgrade", section: "Weapon Upgrades & Services", price: 1000, priceLabel: "1000 gp",
+  { id: 38, book: "core", name: "Resurrection Ritual", cat: "upgrade", section: "Weapon Upgrades & Services", price: 1000, priceLabel: "1000 gp",
     icon: "lorc/angel-outfit",
     desc: "Temple service between adventures. Roll d6 <= PC's Level = success (L6+ auto-success). Failure = PC lost forever.",
     mods: [{ t: "Revive fallen PC", c: "positive" }, { t: "May fail", c: "negative" }] },
 
   // ── Animal Companions ──
-  { id: 39, name: "Hawk", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
+  { id: 39, book: "core", name: "Hawk", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
     icon: "lorc/hawk-emblem",
     desc: "L1, 1 Life. -1 Attack, +2 Defense. Grants +1 orientation; reduces surprise chance outdoors. Max 1 companion per PC.",
     mods: [{ t: "+1 Orientation", c: "positive" }, { t: "-1 Attack", c: "negative" }, { t: "+2 Defense", c: "positive" }] },
-  { id: 40, name: "Owl", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
+  { id: 40, book: "core", name: "Owl", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
     icon: "lorc/owl",
     desc: "L1, 1 Life. -1 Attack, +2 Defense. +1 spellcasting OR kills d6 rat vermin.",
     mods: [{ t: "+1 Spellcasting", c: "positive" }, { t: "-1 Attack", c: "negative" }, { t: "+2 Defense", c: "positive" }] },
-  { id: 41, name: "Warhound", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
+  { id: 41, book: "core", name: "Warhound", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
     icon: "lorc/hound",
     desc: "L1, 2 Life. +1 Attack, no Defense bonus. Takes hits for master (5-6 on d6). Reduces surprise chance.",
     mods: [{ t: "+1 Attack", c: "positive" }, { t: "2 Life", c: "positive" }, { t: "Bodyguard (5-6)", c: "positive" }] },
-  { id: 42, name: "Wildcat", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
+  { id: 42, book: "core", name: "Wildcat", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
     icon: "lorc/cat",
     desc: "L1, 2 Life. No Attack mod, +1 Defense. Kills d6 rat vermin. May refuse to fight (1 on d6).",
     mods: [{ t: "+1 Defense", c: "positive" }, { t: "Kills d6 rats", c: "positive" }, { t: "May refuse (1/6)", c: "negative" }] },
-  { id: 43, name: "Warhorse", cat: "animal", section: "Animal Companions", price: 30, priceLabel: "30 gp",
+  { id: 43, book: "core", name: "Warhorse", cat: "animal", section: "Animal Companions", price: 30, priceLabel: "30 gp",
     icon: "delapouite/horse-head",
     desc: "L2, 3 Life. +1 Attack, +1 Defense. Mounted combat outdoors grants +1 Attack for rider.",
     mods: [{ t: "+1 Attack", c: "positive" }, { t: "+1 Defense", c: "positive" }, { t: "+1 mounted", c: "positive" }, { t: "3 Life", c: "positive" }] },
-  { id: 44, name: "Crow", cat: "animal", section: "Animal Companions", price: 15, priceLabel: "15 gp",
+  { id: 44, book: "core", name: "Crow", cat: "animal", section: "Animal Companions", price: 15, priceLabel: "15 gp",
     icon: "lorc/raven",
     desc: "L1, 1 Life. No combat bonuses. +1 Save vs traps and puzzles. A cunning companion.",
     mods: [{ t: "+1 vs traps/puzzles", c: "positive" }] },
-  { id: 45, name: "Peacock", cat: "animal", section: "Animal Companions", price: 10, priceLabel: "10 gp",
+  { id: 45, book: "core", name: "Peacock", cat: "animal", section: "Animal Companions", price: 10, priceLabel: "10 gp",
     icon: "lorc/feather",
     desc: "L0, 1 Life. -2 Attack, no Defense. +1 wooing/seduction Saves. Fabulous, if impractical.",
     mods: [{ t: "+1 wooing", c: "positive" }, { t: "-2 Attack", c: "negative" }] },
@@ -903,6 +936,7 @@ function renderGrid() {
         <img src="${iconUrl(item.icon)}" alt="${item.name}" loading="lazy"
              onerror="this.src='${FALLBACK_SVG}'">
         <span class="price-coin">${item.priceLabel}</span>
+        <span class="book-badge" data-book="${item.book}"><img src="${iconUrl(BOOKS[item.book].icon)}" alt="">${BOOKS[item.book].name}</span>
       </div>
       <div class="card-body">
         <h3>${item.name}</h3>
