@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Brass Lantern — Four Against Darkness Equipment Shop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --bg: #120e0a;
+    --bg-warm: #1a150f;
+    --bg-card: #1e1812;
+    --bg-card-hover: #261f16;
+    --bg-icon: #12100c;
+    --accent: #c9a84c;
+    --accent-light: #e8d28a;
+    --accent-dim: #7a6a30;
+    --copper: #b87333;
+    --text: #d9cdbf;
+    --text-muted: #9a8b78;
+    --text-dim: #5e5347;
+    --border: #2e261e;
+    --border-accent: #3e3420;
+    --tag-melee: #8b3a3a;
+    --tag-ranged: #3a6b3a;
+    --tag-armor: #3a4a8b;
+    --tag-light: #8b7a3a;
+    --tag-healing: #6b3a6b;
+    --tag-gear: #4a6b6b;
+    --tag-magic: #5a3a8b;
+    --tag-upgrade: #6b5a3a;
+    --tag-animal: #3a6b5a;
+    --red: #c0392b;
+    --green: #5a9a4a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── Decorative BG ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(201, 168, 76, 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 30%, rgba(184, 115, 51, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Header ── */
+  header {
+    position: relative;
+    background: linear-gradient(180deg, #0d0a07 0%, #1a150f 100%);
+    border-bottom: 2px solid var(--accent-dim);
+    padding: 0.6rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  .shop-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px rgba(201, 168, 76, 0.4));
+  }
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+
+  header h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-shadow: 0 1px 8px rgba(201, 168, 76, 0.3);
+    white-space: nowrap;
+  }
+
+  header p.tagline {
+    display: none;
+  }
+
+  .cart-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .cart-bar .cart-total {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    color: var(--accent-light);
+  }
+
+  .hdr-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    padding: 0.4rem 1.1rem;
+    border: 1px solid var(--accent-dim);
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  .hdr-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  /* ── Limits ── */
+  .limits-banner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0.7rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    justify-content: center;
+  }
+  .limits-banner strong { color: var(--text-muted); }
+
+  /* ── Controls ── */
+  .controls {
+    max-width: 1400px;
+    margin: 1rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .search-box {
+    flex: 1 1 240px;
+    padding: 0.5rem 0.9rem;
+    font-family: 'Crimson Text', serif;
+    font-size: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: border 0.2s;
+  }
+  .search-box:focus { border-color: var(--accent); }
+  .search-box::placeholder { color: var(--text-dim); }
+
+  .filter-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .filter-btn:hover { border-color: var(--accent-dim); color: var(--text); }
+  .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(201, 168, 76, 0.06); }
+
+  /* ── Grid ── */
+  .grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .category-header {
+    grid-column: 1 / -1;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--accent);
+    padding: 1.8rem 0 0.4rem;
+    margin-top: 0.5rem;
+    letter-spacing: 3px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .category-header::before,
+  .category-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+  }
+  .category-header:first-child { margin-top: 0; }
+
+  /* ── Card ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    border-color: var(--accent-dim);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 15px rgba(201, 168, 76, 0.05);
+  }
+
+  .card.in-cart { border-color: var(--accent-dim); background: var(--bg-card-hover); }
+  .card.in-cart .card-img { background: linear-gradient(135deg, #1a160e, #22190e); }
+
+  /* ── Card Image Area ── */
+  .card-img {
+    position: relative;
+    height: 160px;
+    background: linear-gradient(135deg, var(--bg-icon), #181410);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .card-img::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .card-img img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(201, 168, 76, 0.15));
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .card:hover .card-img img {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 16px rgba(201, 168, 76, 0.3));
+  }
+
+  .price-coin {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--bg);
+    background: linear-gradient(135deg, var(--accent-light), var(--accent), var(--copper));
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    letter-spacing: 0.5px;
+  }
+
+  .card-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    color: #ddd;
+  }
+
+  /* ── Card Body ── */
+  .card-body {
+    padding: 1rem 1.2rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .card-body h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+
+  .card-body .desc {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    flex: 1;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .modifiers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .mod {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    padding: 0.12rem 0.4rem;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    letter-spacing: 0.5px;
+  }
+  .mod.positive { color: var(--green); border-color: rgba(90, 154, 74, 0.3); }
+  .mod.negative { color: var(--red); border-color: rgba(192, 57, 43, 0.3); }
+  .mod.neutral { color: var(--text-muted); }
+  .mod.hands { color: #7eb8da; border-color: rgba(126, 184, 218, 0.25); }
+
+  .card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .qty-control button {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .qty-control button:hover { border-color: var(--accent); color: var(--accent); }
+
+  .qty-control .qty {
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+    color: var(--accent-light);
+    min-width: 26px;
+    text-align: center;
+  }
+
+  .add-btn {
+    flex: 1;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--accent-dim);
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .add-btn:hover { background: var(--accent); color: var(--bg); }
+  .add-btn.added { background: rgba(201, 168, 76, 0.12); border-color: var(--accent); }
+
+  /* ── Tag Colors ── */
+  .tag-melee { background: var(--tag-melee); }
+  .tag-ranged { background: var(--tag-ranged); }
+  .tag-armor { background: var(--tag-armor); }
+  .tag-light { background: var(--tag-light); }
+  .tag-healing { background: var(--tag-healing); }
+  .tag-gear { background: var(--tag-gear); }
+  .tag-magic { background: var(--tag-magic); }
+  .tag-upgrade { background: var(--tag-upgrade); }
+  .tag-animal { background: var(--tag-animal); }
+
+  /* ── Cart Sidebar ── */
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 200; backdrop-filter: blur(2px); }
+  .overlay.open { display: block; }
+
+  .cart-panel {
+    position: fixed;
+    top: 0; right: -460px;
+    width: 440px;
+    max-width: 94vw;
+    height: 100vh;
+    background: #0d0a07;
+    border-left: 2px solid var(--accent-dim);
+    z-index: 300;
+    transition: right 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .cart-panel.open { right: 0; }
+
+  .cart-panel h2 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.2rem;
+    color: var(--accent);
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .close-btn {
+    background: none; border: none; color: var(--text-dim); cursor: pointer;
+    font-size: 1.5rem; line-height: 1;
+  }
+  .close-btn:hover { color: var(--text); }
+
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.8rem 1.5rem;
+  }
+
+  .cart-section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    gap: 0.5rem;
+  }
+
+  .cart-item .ci-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  .ci-name { flex: 1; font-size: 0.92rem; }
+  .ci-qty { color: var(--text-muted); font-size: 0.85rem; min-width: 30px; text-align: center; }
+  .ci-price { color: var(--accent); font-family: 'Cinzel', serif; font-size: 0.9rem; min-width: 55px; text-align: right; }
+  .ci-remove {
+    background: none; border: none; color: var(--red); cursor: pointer; font-size: 1.1rem; padding: 0 0.3rem; opacity: 0.7;
+  }
+  .ci-remove:hover { opacity: 1; }
+
+  .cart-footer {
+    border-top: 2px solid var(--accent-dim);
+    padding: 1rem 1.5rem;
+  }
+
+  .total-line {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    color: var(--accent-light);
+    margin-bottom: 0.3rem;
+  }
+
+  .per-pc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-align: right;
+    margin-bottom: 0.8rem;
+  }
+
+  .checkout-btns { display: flex; gap: 0.5rem; }
+  .checkout-btns button {
+    flex: 1;
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .btn-copy { border: 1px solid var(--accent-dim); background: transparent; color: var(--accent); }
+  .btn-copy:hover { background: var(--accent); color: var(--bg); }
+  .btn-clear { border: 1px solid #5a2a2a; background: transparent; color: var(--red); }
+  .btn-clear:hover { background: var(--red); color: white; }
+
+  .cart-empty {
+    text-align: center;
+    color: var(--text-dim);
+    font-style: italic;
+    padding: 3rem 0;
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--accent-dim); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: linear-gradient(135deg, var(--accent), var(--copper));
+    color: var(--bg);
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    z-index: 400;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    header { flex-direction: column; padding: 0.5rem 1rem; gap: 0.4rem; }
+    header h1 { font-size: 1.1rem; letter-spacing: 1px; }
+    .grid { grid-template-columns: 1fr; padding: 0 1rem 3rem; }
+    .controls { padding: 0 1rem; }
+    .card-img { height: 130px; }
+    .card-img img { width: 70px; height: 70px; }
+  }
+
+  /* ── Fallback icon (CSS-drawn) ── */
+  .fallback-icon {
+    width: 90px; height: 90px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem; color: var(--accent-dim); opacity: 0.5;
+    font-family: 'Cinzel Decorative', serif;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-title">
+    <img class="shop-icon" src="https://game-icons.net/icons/ffffff/transparent/1x1/lorc/lantern.svg" alt="" onerror="this.style.display='none'">
+    <h1>The Brass Lantern</h1>
+  </div>
+  <div class="cart-bar">
+    <span class="cart-total" id="headerTotal">Purse: 0 gp</span>
+    <button class="hdr-btn" onclick="openCart()">&#9776; Cart</button>
+    <button class="hdr-btn" onclick="exportText()">&#128220; Export</button>
+  </div>
+</header>
+
+<div class="limits-banner">
+  <span><strong>Carry Limits:</strong> 200 gp / PC</span>
+  <span>Max 2 shields (1 used, 1 on back)</span>
+  <span>Max 3 weapons (2H = 2 slots)</span>
+  <span>Over limit: -1 Defense &amp; Climbing/Jumping/Swimming</span>
+</div>
+
+<div class="controls">
+  <input class="search-box" type="text" id="searchBox" placeholder="Search equipment..." oninput="filterItems()">
+  <button class="filter-btn active" data-cat="all" onclick="setFilter(this)">All</button>
+  <button class="filter-btn" data-cat="melee" onclick="setFilter(this)">Melee</button>
+  <button class="filter-btn" data-cat="ranged" onclick="setFilter(this)">Ranged</button>
+  <button class="filter-btn" data-cat="armor" onclick="setFilter(this)">Armor</button>
+  <button class="filter-btn" data-cat="light" onclick="setFilter(this)">Light</button>
+  <button class="filter-btn" data-cat="healing" onclick="setFilter(this)">Healing</button>
+  <button class="filter-btn" data-cat="gear" onclick="setFilter(this)">Gear</button>
+  <button class="filter-btn" data-cat="magic" onclick="setFilter(this)">Magic</button>
+  <button class="filter-btn" data-cat="upgrade" onclick="setFilter(this)">Upgrades</button>
+  <button class="filter-btn" data-cat="animal" onclick="setFilter(this)">Animals</button>
+</div>
+
+<div class="grid" id="shopGrid"></div>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <h2>Shopping Cart <button class="close-btn" onclick="closeCart()">&times;</button></h2>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="total-line"><span>Total</span><span id="cartTotal">0 gp</span></div>
+    <div class="per-pc" id="perPcLine">0 gp per PC (party of 4)</div>
+    <div class="checkout-btns">
+      <button class="btn-copy" onclick="copyCart()">Copy to Clipboard</button>
+      <button class="btn-clear" onclick="clearCart()">Clear Cart</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  Four Against Darkness &mdash; Equipment Reference &mdash; Icons by <a href="https://game-icons.net/" target="_blank">game-icons.net</a> (CC BY 3.0)
+</footer>
+
+<script>
+// ── Icon base URL ──
+const ICON_BASE = "https://game-icons.net/icons/ffffff/transparent/1x1/";
+
+// ── Fallback SVG (simple diamond shape) ──
+const FALLBACK_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,10 90,50 50,90 10,50' fill='none' stroke='%23ffffff' stroke-width='3'/%3E%3Ccircle cx='50' cy='50' r='8' fill='%23ffffff'/%3E%3C/svg%3E";
+
+const ITEMS = [
+  // ── Melee Weapons ──
+  { id: 1,  name: "Light Weapon", cat: "melee", section: "Melee Weapons", price: 5, priceLabel: "5 gp",
+    icon: "lorc/plain-dagger",
+    desc: "Dagger, knife, stick, or club. Slashing or crushing.",
+    mods: [{ t: "-1 Attack", c: "negative" }, { t: "1 hand", c: "hands" }, { t: "No corridor penalty", c: "positive" }] },
+  { id: 2,  name: "Hand Weapon", cat: "melee", section: "Melee Weapons", price: 6, priceLabel: "6 gp",
+    icon: "skoll/gladius",
+    desc: "Sword, axe, mace, or hammer. Slashing or crushing. The adventurer's staple.",
+    mods: [{ t: "No modifier", c: "neutral" }, { t: "1 hand", c: "hands" }] },
+  { id: 3,  name: "Two-Handed Weapon", cat: "melee", section: "Melee Weapons", price: 15, priceLabel: "15 gp",
+    icon: "lorc/battle-axe",
+    desc: "Greatsword, halberd, maul, or warhammer. Slashing or crushing.",
+    mods: [{ t: "+1 Attack", c: "positive" }, { t: "2 hands", c: "hands" }, { t: "-1 in corridors", c: "negative" }] },
+  { id: 4,  name: "Stake", cat: "melee", section: "Melee Weapons", price: 6, priceLabel: "6 gp",
+    icon: "lorc/sacrificial-dagger",
+    desc: "Wooden stake. Light weapon normally, but counts as hand weapon vs vampires.",
+    mods: [{ t: "-1 Attack", c: "negative" }, { t: "Hand wpn vs vampires", c: "positive" }, { t: "1 hand", c: "hands" }] },
+  { id: 5,  name: "Crowbar", cat: "melee", section: "Melee Weapons", price: 10, priceLabel: "10 gp",
+    icon: "delapouite/crowbar",
+    desc: "Light crushing weapon. Also handy for prying open stubborn doors.",
+    mods: [{ t: "-1 Attack", c: "negative" }, { t: "+1 bash doors", c: "positive" }, { t: "1 hand", c: "hands" }] },
+
+  // ── Ranged Weapons ──
+  { id: 6,  name: "Sling", cat: "ranged", section: "Ranged Weapons", price: 4, priceLabel: "4 gp",
+    icon: "lorc/pocket-bow",
+    desc: "Crushing ranged weapon. Shoot once before melee. Twice in open plains/deserts if not surprised.",
+    mods: [{ t: "-1 Attack", c: "negative" }, { t: "Crushing", c: "neutral" }, { t: "2 hands", c: "hands" }] },
+  { id: 7,  name: "Bow", cat: "ranged", section: "Ranged Weapons", price: 15, priceLabel: "15 gp",
+    icon: "delapouite/bow-arrow",
+    desc: "Standard bow. Shoot once before melee. Rangers & elves shoot twice outdoors if not surprised.",
+    mods: [{ t: "No modifier", c: "neutral" }, { t: "Slashing", c: "neutral" }, { t: "2 hands", c: "hands" }] },
+  { id: 8,  name: "Crossbow", cat: "ranged", section: "Ranged Weapons", price: 15, priceLabel: "15 gp",
+    icon: "carl-olsen/crossbow",
+    desc: "Heavy crossbow. Powerful but slow to reload. 1 turn to reload after each shot.",
+    mods: [{ t: "+1 Attack", c: "positive" }, { t: "Slashing", c: "neutral" }, { t: "2 hands", c: "hands" }, { t: "1 turn reload", c: "negative" }] },
+  { id: 9,  name: "Throwing Star", cat: "ranged", section: "Ranged Weapons", price: 2, priceLabel: "2 gp",
+    icon: "lorc/shuriken",
+    desc: "Light ranged slashing. Max 1 dmg per hit. Throw 2 per turn at same or different targets.",
+    mods: [{ t: "-1 Attack", c: "negative" }, { t: "Max 1 dmg", c: "negative" }, { t: "2 throws/turn", c: "positive" }] },
+  { id: 10, name: "Handgun", cat: "ranged", section: "Ranged Weapons", price: 30, priceLabel: "30 gp",
+    icon: "john-colburn/pistol-gun",
+    desc: "Black powder pistol. Devastating but unreliable. Explodes on roll of 1 (1 dmg to user). 2 turns reload. +1 Wandering Monster chance.",
+    mods: [{ t: "+2 Attack", c: "positive" }, { t: "Explodes on 1", c: "negative" }, { t: "2 turn reload", c: "negative" }] },
+  { id: 11, name: "Black Powder Rifle", cat: "ranged", section: "Ranged Weapons", price: 90, priceLabel: "90 gp",
+    icon: "skoll/musket",
+    desc: "Long-range black powder weapon. Explodes on roll of 1 (1 dmg to user). 2 turns reload. +1 Wandering Monster chance.",
+    mods: [{ t: "+3 Attack", c: "positive" }, { t: "Explodes on 1", c: "negative" }, { t: "2 turn reload", c: "negative" }] },
+
+  // ── Armor & Defense ──
+  { id: 12, name: "Light Armor", cat: "armor", section: "Armor & Defense", price: 10, priceLabel: "10 gp",
+    icon: "delapouite/leather-armor",
+    desc: "Leather or padded armor. Non-metallic. Wearable by most classes.",
+    mods: [{ t: "+1 Defense", c: "positive" }, { t: "-1 Swimming", c: "negative" }] },
+  { id: 13, name: "Heavy Armor", cat: "armor", section: "Armor & Defense", price: 30, priceLabel: "30 gp",
+    icon: "lorc/breastplate",
+    desc: "Chain or plate armor. Metallic. Restricts mobility but offers solid protection.",
+    mods: [{ t: "+2 Defense", c: "positive" }, { t: "-1 Stealth", c: "negative" }, { t: "-2 Swimming/Climbing", c: "negative" }] },
+  { id: 14, name: "Shield", cat: "armor", section: "Armor & Defense", price: 5, priceLabel: "5 gp",
+    icon: "willdabeast/round-shield",
+    desc: "Wooden or metal shield. Can carry a spare on your back. Lost when fleeing.",
+    mods: [{ t: "+1 Defense", c: "positive" }, { t: "-1 Stealth", c: "negative" }, { t: "1 hand", c: "hands" }] },
+
+  // ── Light Sources ──
+  { id: 15, name: "Lantern", cat: "light", section: "Light Sources", price: 4, priceLabel: "4 gp",
+    icon: "lorc/lantern",
+    desc: "Oil lantern. Light source that lasts the entire adventure. Requires one hand.",
+    mods: [{ t: "Lasts whole adventure", c: "positive" }, { t: "1 hand", c: "hands" }] },
+  { id: 16, name: "Torch (pack of 12)", cat: "light", section: "Light Sources", price: 1, priceLabel: "1 gp",
+    icon: "delapouite/torch",
+    desc: "Bundle of 12 torches. Each lasts 6 rooms / 1 hour. Can be used as a light crushing weapon (+2 vs flammable foes). Extinguished on attack roll of 1.",
+    mods: [{ t: "6 rooms each", c: "neutral" }, { t: "+2 vs flammable", c: "positive" }, { t: "1 hand", c: "hands" }] },
+  { id: 17, name: "Lantern Hook", cat: "light", section: "Light Sources", price: 2, priceLabel: "2 gp",
+    icon: "delapouite/hook",
+    desc: "Attach lantern to shield, freeing one hand. If shield destroyed: 3-in-6 chance lantern is also destroyed.",
+    mods: [{ t: "Frees 1 hand", c: "positive" }, { t: "Risk if shield breaks", c: "negative" }] },
+
+  // ── Healing & Remedies ──
+  { id: 18, name: "Bandage", cat: "healing", section: "Healing & Remedies", price: 5, priceLabel: "5 gp",
+    icon: "lorc/bandage-roll",
+    desc: "Heals 1 Life. Max 1 per PC per adventure. Cannot be used in combat. Cumulative with other healing.",
+    mods: [{ t: "+1 Life", c: "positive" }, { t: "1/PC/adventure", c: "neutral" }, { t: "No combat use", c: "negative" }] },
+  { id: 19, name: "Healing Potion", cat: "healing", section: "Healing & Remedies", price: 100, priceLabel: "100 gp",
+    icon: "delapouite/health-potion",
+    desc: "Heals ALL damage. Max 1 per PC per adventure. Free action \u2014 usable even in combat.",
+    mods: [{ t: "Full heal", c: "positive" }, { t: "Free action", c: "positive" }, { t: "1/PC/adventure", c: "neutral" }] },
+  { id: 20, name: "Herbal Tonic", cat: "healing", section: "Healing & Remedies", price: 20, priceLabel: "20 gp",
+    icon: "lorc/standing-potion",
+    desc: "Removes paralysis (e.g., from ghouls). Takes 1 turn to apply. Usable in combat.",
+    mods: [{ t: "Cures paralysis", c: "positive" }, { t: "1 turn", c: "neutral" }] },
+  { id: 21, name: "Berserker Mushroom", cat: "healing", section: "Healing & Remedies", price: 15, priceLabel: "15 gp",
+    icon: "lorc/spotted-mushroom",
+    desc: "Free action. +1 melee Attack for 1 encounter. Lose 1 Life when encounter ends. High risk, high reward.",
+    mods: [{ t: "+1 melee Attack", c: "positive" }, { t: "-1 Life after", c: "negative" }, { t: "Free action", c: "positive" }] },
+
+  // ── Adventuring Gear ──
+  { id: 22, name: "Rope", cat: "gear", section: "Adventuring Gear", price: 4, priceLabel: "4 gp",
+    icon: "delapouite/rope-coil",
+    desc: "Sturdy rope. +1 to Climbing Saves. Can also be used to bind subdued foes.",
+    mods: [{ t: "+1 Climbing", c: "positive" }] },
+  { id: 23, name: "10' Pole", cat: "gear", section: "Adventuring Gear", price: 2, priceLabel: "2 gp",
+    icon: "lorc/wizard-staff",
+    desc: "A long wooden pole. +1 Save vs single-target traps. Reroll Search results of 2-4. Weapon type depends on class.",
+    mods: [{ t: "+1 vs traps", c: "positive" }, { t: "Reroll searches", c: "positive" }, { t: "2 hands", c: "hands" }] },
+  { id: 24, name: "Bag of Nails", cat: "gear", section: "Adventuring Gear", price: 4, priceLabel: "4 gp",
+    icon: "lorc/nails",
+    desc: "Secure 1 door when resting. Essential for a safe rest. One use per bag.",
+    mods: [{ t: "Seal 1 door", c: "positive" }, { t: "Single use", c: "neutral" }] },
+  { id: 25, name: "Food Ration", cat: "gear", section: "Adventuring Gear", price: 1, priceLabel: "1 gp",
+    icon: "delapouite/bread",
+    desc: "Feeds 1 person for 1 day. Max 10 per PC. Also useful as bribes for hungry foes.",
+    mods: [{ t: "Max 10/PC", c: "neutral" }, { t: "Bribe fodder", c: "positive" }] },
+  { id: 26, name: "Good Lockpicks", cat: "gear", section: "Adventuring Gear", price: 25, priceLabel: "25 gp",
+    icon: "delapouite/lockpicks",
+    desc: "High-quality lockpicks. +1 to lockpicking Saves. A rogue's best friend.",
+    mods: [{ t: "+1 Lockpicking", c: "positive" }] },
+  { id: 27, name: "Scroll Tube", cat: "gear", section: "Adventuring Gear", price: 4, priceLabel: "4 gp",
+    icon: "lorc/tied-scroll",
+    desc: "Protects 1 scroll from destruction events. Keeps your precious spells safe.",
+    mods: [{ t: "Protects 1 scroll", c: "positive" }] },
+  { id: 28, name: "Oil Flask", cat: "gear", section: "Adventuring Gear", price: 10, priceLabel: "10 gp",
+    icon: "delapouite/water-flask",
+    desc: "1 turn to throw. Makes a foe flammable (+2 for fire attacks). Max 1 per PC. Warning: destroys scrolls in foe's loot if fire hits.",
+    mods: [{ t: "Makes flammable", c: "positive" }, { t: "1/PC", c: "neutral" }, { t: "Destroys scroll loot", c: "negative" }] },
+
+  // ── Magic Items & Consumables ──
+  { id: 29, name: "Amulet", cat: "magic", section: "Magic Items & Consumables", price: 15, priceLabel: "15 gp",
+    icon: "lorc/gem-pendant",
+    desc: "Grants 1 Luck point (reroll any roll, like halfling Luck). Discarded after use. Max 1 per PC.",
+    mods: [{ t: "1 Luck reroll", c: "positive" }, { t: "Single use", c: "neutral" }, { t: "1/PC", c: "neutral" }] },
+  { id: 30, name: "Talisman", cat: "magic", section: "Magic Items & Consumables", price: 10, priceLabel: "10 gp",
+    icon: "lorc/crystal-shine",
+    desc: "+1 to a single Save (choose before rolling). Discarded after use. Max 1 per PC.",
+    mods: [{ t: "+1 Save", c: "positive" }, { t: "Single use", c: "neutral" }, { t: "1/PC", c: "neutral" }] },
+  { id: 31, name: "Holy Water", cat: "magic", section: "Magic Items & Consumables", price: 30, priceLabel: "30 gp",
+    icon: "delapouite/holy-water",
+    desc: "1 turn to throw. Auto-damage to undead/demons \u2014 no Attack roll needed. Max 1 vial per PC per adventure.",
+    mods: [{ t: "Auto-hit undead", c: "positive" }, { t: "1 vial/PC/adv", c: "neutral" }] },
+  { id: 32, name: "Scroll of Blessing", cat: "magic", section: "Magic Items & Consumables", price: 100, priceLabel: "100 gp",
+    icon: "lorc/scroll-unfurled",
+    desc: "1 turn to read. Casts Blessing (removes curse, petrification, etc.). Invaluable insurance.",
+    mods: [{ t: "Removes curse", c: "positive" }, { t: "Single use", c: "neutral" }] },
+  { id: 33, name: "Gremlin Repellent", cat: "magic", section: "Magic Items & Consumables", price: 5, priceLabel: "5 gp",
+    icon: "lorc/fizzing-flask",
+    desc: "Smear on 1 item before adventure. Invisible gremlins won't steal it. Wears off at end of adventure.",
+    mods: [{ t: "Anti-gremlin", c: "positive" }, { t: "1 adventure", c: "neutral" }] },
+  { id: 34, name: "Wolfsbane", cat: "magic", section: "Magic Items & Consumables", price: 10, priceLabel: "10 gp",
+    icon: "lorc/wolf-howl",
+    desc: "1 turn to throw. Forces werecreature to roll Morale \u2014 no Attack roll needed. Bunch is consumed on use.",
+    mods: [{ t: "Forces Morale", c: "positive" }, { t: "vs werecreatures", c: "neutral" }, { t: "Single use", c: "neutral" }] },
+
+  // ── Weapon Upgrades & Services ──
+  { id: 35, name: "Silvering (Light/Hand)", cat: "upgrade", section: "Weapon Upgrades & Services", price: 20, priceLabel: "20 gp",
+    icon: "lorc/anvil",
+    desc: "Silver-coat a metallic slashing light or hand weapon. Effective against werecreatures.",
+    mods: [{ t: "+1 vs werecreatures", c: "positive" }] },
+  { id: 36, name: "Silvering (Two-Handed)", cat: "upgrade", section: "Weapon Upgrades & Services", price: 40, priceLabel: "40 gp",
+    icon: "lorc/anvil-impact",
+    desc: "Silver-coat a metallic slashing two-handed weapon. Effective against werecreatures.",
+    mods: [{ t: "+1 vs werecreatures", c: "positive" }] },
+  { id: 37, name: "Gilding", cat: "upgrade", section: "Weapon Upgrades & Services", price: 50, priceLabel: "50 gp",
+    icon: "delapouite/gold-nuggets",
+    desc: "Gold-coat a metallic weapon. Makes it devastatingly effective against elementals.",
+    mods: [{ t: "+2 vs elementals", c: "positive" }] },
+  { id: 38, name: "Resurrection Ritual", cat: "upgrade", section: "Weapon Upgrades & Services", price: 1000, priceLabel: "1000 gp",
+    icon: "lorc/angel-outfit",
+    desc: "Temple service between adventures. Roll d6 <= PC's Level = success (L6+ auto-success). Failure = PC lost forever.",
+    mods: [{ t: "Revive fallen PC", c: "positive" }, { t: "May fail", c: "negative" }] },
+
+  // ── Animal Companions ──
+  { id: 39, name: "Hawk", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
+    icon: "lorc/hawk-emblem",
+    desc: "L1, 1 Life. -1 Attack, +2 Defense. Grants +1 orientation; reduces surprise chance outdoors. Max 1 companion per PC.",
+    mods: [{ t: "+1 Orientation", c: "positive" }, { t: "-1 Attack", c: "negative" }, { t: "+2 Defense", c: "positive" }] },
+  { id: 40, name: "Owl", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
+    icon: "lorc/owl",
+    desc: "L1, 1 Life. -1 Attack, +2 Defense. +1 spellcasting OR kills d6 rat vermin.",
+    mods: [{ t: "+1 Spellcasting", c: "positive" }, { t: "-1 Attack", c: "negative" }, { t: "+2 Defense", c: "positive" }] },
+  { id: 41, name: "Warhound", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
+    icon: "lorc/hound",
+    desc: "L1, 2 Life. +1 Attack, no Defense bonus. Takes hits for master (5-6 on d6). Reduces surprise chance.",
+    mods: [{ t: "+1 Attack", c: "positive" }, { t: "2 Life", c: "positive" }, { t: "Bodyguard (5-6)", c: "positive" }] },
+  { id: 42, name: "Wildcat", cat: "animal", section: "Animal Companions", price: 20, priceLabel: "20 gp",
+    icon: "lorc/cat",
+    desc: "L1, 2 Life. No Attack mod, +1 Defense. Kills d6 rat vermin. May refuse to fight (1 on d6).",
+    mods: [{ t: "+1 Defense", c: "positive" }, { t: "Kills d6 rats", c: "positive" }, { t: "May refuse (1/6)", c: "negative" }] },
+  { id: 43, name: "Warhorse", cat: "animal", section: "Animal Companions", price: 30, priceLabel: "30 gp",
+    icon: "delapouite/horse-head",
+    desc: "L2, 3 Life. +1 Attack, +1 Defense. Mounted combat outdoors grants +1 Attack for rider.",
+    mods: [{ t: "+1 Attack", c: "positive" }, { t: "+1 Defense", c: "positive" }, { t: "+1 mounted", c: "positive" }, { t: "3 Life", c: "positive" }] },
+  { id: 44, name: "Crow", cat: "animal", section: "Animal Companions", price: 15, priceLabel: "15 gp",
+    icon: "lorc/raven",
+    desc: "L1, 1 Life. No combat bonuses. +1 Save vs traps and puzzles. A cunning companion.",
+    mods: [{ t: "+1 vs traps/puzzles", c: "positive" }] },
+  { id: 45, name: "Peacock", cat: "animal", section: "Animal Companions", price: 10, priceLabel: "10 gp",
+    icon: "lorc/feather",
+    desc: "L0, 1 Life. -2 Attack, no Defense. +1 wooing/seduction Saves. Fabulous, if impractical.",
+    mods: [{ t: "+1 wooing", c: "positive" }, { t: "-2 Attack", c: "negative" }] },
+];
+
+// ── State ──
+let cart = {};
+let activeFilter = "all";
+
+function getItem(id) { return ITEMS.find(i => i.id === id); }
+function iconUrl(path) { return ICON_BASE + path + ".svg"; }
+
+// ── Rendering ──
+function renderGrid() {
+  const grid = document.getElementById("shopGrid");
+  const search = document.getElementById("searchBox").value.toLowerCase();
+  grid.innerHTML = "";
+
+  let lastSection = "";
+  const filtered = ITEMS.filter(item => {
+    if (activeFilter !== "all" && item.cat !== activeFilter) return false;
+    if (search && !item.name.toLowerCase().includes(search) && !item.desc.toLowerCase().includes(search) && !item.cat.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  filtered.forEach(item => {
+    if (item.section !== lastSection) {
+      lastSection = item.section;
+      const hdr = document.createElement("div");
+      hdr.className = "category-header";
+      hdr.textContent = item.section;
+      grid.appendChild(hdr);
+    }
+
+    const qty = cart[item.id] || 0;
+    const card = document.createElement("div");
+    card.className = "card" + (qty > 0 ? " in-cart" : "");
+    card.innerHTML = `
+      <div class="card-img">
+        <span class="card-tag tag-${item.cat}">${item.cat}</span>
+        <img src="${iconUrl(item.icon)}" alt="${item.name}" loading="lazy"
+             onerror="this.src='${FALLBACK_SVG}'">
+        <span class="price-coin">${item.priceLabel}</span>
+      </div>
+      <div class="card-body">
+        <h3>${item.name}</h3>
+        <p class="desc">${item.desc}</p>
+        <div class="modifiers">
+          ${item.mods.map(m => `<span class="mod ${m.c}">${m.t}</span>`).join("")}
+        </div>
+        <div class="card-actions">
+          <div class="qty-control">
+            <button onclick="changeQty(${item.id}, -1)">&#8722;</button>
+            <span class="qty">${qty}</span>
+            <button onclick="changeQty(${item.id}, 1)">+</button>
+          </div>
+          <button class="add-btn ${qty > 0 ? 'added' : ''}" onclick="changeQty(${item.id}, 1)">
+            ${qty > 0 ? "Add Another" : "Add to Cart"}
+          </button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-dim);padding:3rem;font-style:italic;">No items match your search.</p>';
+  }
+}
+
+function changeQty(id, delta) {
+  const next = (cart[id] || 0) + delta;
+  if (next <= 0) delete cart[id];
+  else cart[id] = next;
+  updateTotals();
+  renderGrid();
+  renderCart();
+}
+
+function updateTotals() {
+  let total = 0;
+  for (const [id, qty] of Object.entries(cart)) {
+    const item = getItem(parseInt(id));
+    if (item) total += item.price * qty;
+  }
+  document.getElementById("headerTotal").textContent = `Purse: ${total} gp`;
+  document.getElementById("cartTotal").textContent = `${total} gp`;
+  document.getElementById("perPcLine").textContent = `${Math.ceil(total / 4)} gp per PC (party of 4)`;
+}
+
+function renderCart() {
+  const container = document.getElementById("cartItems");
+  const entries = Object.entries(cart);
+
+  if (entries.length === 0) {
+    container.innerHTML = '<div class="cart-empty">Your cart is empty.<br>The dungeon awaits...</div>';
+    return;
+  }
+
+  const groups = {};
+  entries.forEach(([id, qty]) => {
+    const item = getItem(parseInt(id));
+    if (!item) return;
+    if (!groups[item.section]) groups[item.section] = [];
+    groups[item.section].push({ item, qty });
+  });
+
+  let html = "";
+  for (const [section, items] of Object.entries(groups)) {
+    html += `<div class="cart-section-label">${section}</div>`;
+    items.forEach(({ item, qty }) => {
+      html += `
+        <div class="cart-item">
+          <img class="ci-icon" src="${iconUrl(item.icon)}" alt="" onerror="this.style.display='none'">
+          <span class="ci-name">${item.name}</span>
+          <span class="ci-qty">&times;${qty}</span>
+          <span class="ci-price">${item.price * qty} gp</span>
+          <button class="ci-remove" onclick="changeQty(${item.id}, -${qty})">&times;</button>
+        </div>`;
+    });
+  }
+  container.innerHTML = html;
+}
+
+// ── Filters ──
+function setFilter(btn) {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  activeFilter = btn.dataset.cat;
+  renderGrid();
+}
+
+function filterItems() { renderGrid(); }
+
+// ── Cart panel ──
+function openCart() {
+  document.getElementById("cartPanel").classList.add("open");
+  document.getElementById("overlay").classList.add("open");
+}
+
+function closeCart() {
+  document.getElementById("cartPanel").classList.remove("open");
+  document.getElementById("overlay").classList.remove("open");
+}
+
+function clearCart() {
+  cart = {};
+  updateTotals();
+  renderGrid();
+  renderCart();
+  showToast("Cart cleared");
+}
+
+// ── Export ──
+function buildTextList() {
+  const entries = Object.entries(cart);
+  if (entries.length === 0) return "No items in cart.";
+
+  const groups = {};
+  let total = 0;
+  entries.forEach(([id, qty]) => {
+    const item = getItem(parseInt(id));
+    if (!item) return;
+    if (!groups[item.section]) groups[item.section] = [];
+    groups[item.section].push({ item, qty });
+    total += item.price * qty;
+  });
+
+  let lines = ["=== Four Against Darkness \u2014 Equipment List ===", ""];
+  for (const [section, items] of Object.entries(groups)) {
+    lines.push(`\u2500\u2500 ${section} \u2500\u2500`);
+    items.forEach(({ item, qty }) => {
+      lines.push(`  ${qty}x ${item.name} \u2014 ${item.price * qty} gp${qty > 1 ? ` (${item.price} gp each)` : ""}`);
+    });
+    lines.push("");
+  }
+  lines.push(`TOTAL: ${total} gp (${Math.ceil(total / 4)} gp per PC)`);
+  return lines.join("\n");
+}
+
+function copyCart() {
+  const text = buildTextList();
+  navigator.clipboard.writeText(text).then(() => showToast("Copied to clipboard!")).catch(() => showToast("Copy failed"));
+}
+
+function exportText() {
+  const text = buildTextList();
+  const blob = new Blob([text], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "4AD-Equipment-List.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast("Exported equipment list");
+}
+
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+// ── Init ──
+renderGrid();
+renderCart();
+updateTotals();
+</script>
+</body>
+</html>
